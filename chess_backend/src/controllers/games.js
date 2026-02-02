@@ -11,12 +11,13 @@ class GamesController {
   // PUBLIC_INTERFACE
   async create(req, res) {
     /** Create a new game and return the creator's player token. */
-    const { creatorName, creatorColor, timeControl } = req.body || {};
+    const { creatorName, creatorColor, timeControl, initialFen } = req.body || {};
 
     const result = gameStore.createGame({
       creatorName,
       creatorColor,
       timeControl,
+      initialFen,
     });
 
     return res.status(201).json(result);

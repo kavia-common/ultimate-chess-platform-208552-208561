@@ -41,6 +41,12 @@ const options = {
             creatorName: { type: 'string', example: 'Alice' },
             creatorColor: { type: 'string', enum: ['w', 'b'], example: 'w' },
             timeControl: { $ref: '#/components/schemas/TimeControl' },
+            initialFen: {
+              type: 'string',
+              description:
+                'Optional. Initialize a new game from a given FEN (used for save/load snapshots). If invalid, server falls back to standard start position.',
+              example: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+            },
           },
         },
         CreateGameResponse: {

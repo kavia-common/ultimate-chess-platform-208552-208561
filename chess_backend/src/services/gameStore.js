@@ -95,7 +95,7 @@ class GameStore {
     }, 750);
   }
 
-  _createNewGame({ creatorName, creatorColor, timeControl }) {
+  _createNewGame({ creatorName, creatorColor, timeControl, initialFen }) {
     const color = normalizeColor(creatorColor) || 'w';
     const initialMs = Math.max(0, Number(timeControl?.initialMs ?? 300000));
     const incrementMs = Math.max(0, Number(timeControl?.incrementMs ?? 2000));
@@ -103,7 +103,13 @@ class GameStore {
     const gameId = randomId();
     const createdAt = new Date().toISOString();
 
-    const chess = new Chess();
+    // Allow creating a game from a snapshot (FEN). If invalid, fall back to standard startpos.
+    let chess;
+    try {
+      chess = initialFen ? new Chess(String(initialFen)) : new Chess();
+    } catch {
+      chess = new Chess();
+    }
 
     const white = { id: null, name: null, present: false };
     const black = { id: null, name: null, present: false };
@@ -267,12 +273,13 @@ class GameStore {
   }
 
   // PUBLIC_INTERFACE
-  createGame({ creatorName, creatorColor, timeControl } = {}) {
+  createGame({ creatorName, creatorColor, timeControl, initialFen } = {}) {
     /** Create a new game and return creator token + initial public state. */
     const { game, creatorPlayerId, creatorColor: assignedColor } = this._createNewGame({
       creatorName,
       creatorColor,
       timeControl,
+      initialFen,
     });
 
     this._maybeStartGame(game);
