@@ -1,0 +1,4 @@
+{
+    "command": "npm run test",
+    "working_directory": "/home/kavia/workspace/code-generation/ultimate-chess-platform-208552-208561/chess_backend"
+}
